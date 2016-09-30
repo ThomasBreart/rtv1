@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 07:52:21 by tbreart           #+#    #+#             */
-/*   Updated: 2016/09/30 19:49:07 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/09/30 22:48:32 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,18 +64,18 @@ int		intersection_sphere(t_sphere *sphere, t_ray *ray)
 	double		hit;
 
 	a = ray->d.x * ray->d.x + ray->d.y * ray->d.y + ray->d.z * ray->d.z;
-	b = 2 * (ray->d.x * (ray->o.x - sphere->origin.x) + ray->d.y * (ray->o.y - sphere->origin.y) + ray->d.z * (ray->o.z - sphere->origin.z));
+	b = 2.0 * (ray->d.x * (ray->o.x - sphere->origin.x) + ray->d.y * (ray->o.y - sphere->origin.y) + ray->d.z * (ray->o.z - sphere->origin.z));
 	c = ft_carre(ray->o.x - sphere->origin.x) + ft_carre(ray->o.y - sphere->origin.y) + ft_carre(ray->o.z - sphere->origin.z) - ft_carre(sphere->radius);
 
-	delta = ft_carre(b) - 4 * a * c;
+	delta = ft_carre(b) - (4.0 * a * c);
 	if (delta < 0)
 		return (0);
 	if (delta == 0)
-		hit = b * -1 / 2 * a;
+		hit = b * -1.0 / (2.0 * a);
 	else
 	{
-		t1 = (b * -1 + sqrt(delta)) / 2 * a;
-		t2 = (b * -1 - sqrt(delta)) / 2 * a;
+		t1 = ((b * -1.0) + sqrt(delta)) / (2.0 * a);
+		t2 = ((b * -1.0) - sqrt(delta)) / (2.0 * a);
 		if (t1 < t2)
 			hit = t1;
 		else
@@ -107,14 +107,21 @@ int		expose_hook(t_mlx *mlx)
 			target.y = y - (var->win_ord / 2);
 			target.z = -(var->win_abs / (2 * tan(var->cam_d_z / 2)));*/
 			vector_normalize(&target);
-
+	if (y == 0 && x == 500)
+		printf("target - x: %f, y: %f, z: %f\n", target.x, target.y, target.z);
+	if (y == 250 && x == 500)
+		printf("target - x: %f, y: %f, z: %f\n", target.x, target.y, target.z);
+	if (y == 500 && x == 500)
+		printf("target - x: %f, y: %f, z: %f\n", target.x, target.y, target.z);
+	if (y == 999 && x == 0)
+		printf("target - x: %f, y: %f, z: %f\n", target.x, target.y, target.z);
 	/*		ray_direction.x = target.x - var->cam_o.x;
 			ray_direction.y = target.y - var->cam_o.y;
 			ray_direction.z = target.z - var->cam_o.z;*/
 			ray_direction = vector_sub(target, var->cam.origin);
 			vector_normalize(&ray_direction);
 
-			ray = create_ray(var->cam.origin, ray_direction);
+			ray = create_ray(var->cam.origin, target); // target ou ray_direction ?
 		//	coef = 20000;
 			if (intersection_sphere(&var->sphere, &ray) == 1)
 				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0xFF0000));

@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:58:54 by tbreart           #+#    #+#             */
-/*   Updated: 2016/09/30 21:04:34 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/09/30 22:39:19 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void	init_cam(t_cam *cam, t_var *var)
 	vector_normalize(&cam->upvec);
 	vector_normalize(&cam->rightvec);
 	printf("upveec x: %f, y: %f, z: %f\n", cam->upvec.x, cam->upvec.y, cam->upvec.z);
+	printf("dirveec x: %f, y: %f, z: %f\n", cam->dirvec.x, cam->dirvec.y, cam->dirvec.z);
+	printf("rightveec x: %f, y: %f, z: %f\n", cam->rightvec.x, cam->rightvec.y, cam->rightvec.z);
 
 	cam->viewplane_upleft = vector_init(cam->origin.x, cam->origin.y, cam->origin.z);
 	printf("x: %f, y: %f, z: %f\n", cam->viewplane_upleft.x, cam->viewplane_upleft.y, cam->viewplane_upleft.z);
@@ -59,8 +61,8 @@ void	display(void)
 	mlx = get_mlx();
 	var = get_var();
 	init_cam(&var->cam, var);
-	var->sphere.origin.x = 100;
-	var->sphere.origin.y = 0;
+	var->sphere.origin.x = 200;
+	var->sphere.origin.y = 200;
 	var->sphere.origin.z = 100;
 	var->sphere.radius = 40;
 //	init_scene(var);
