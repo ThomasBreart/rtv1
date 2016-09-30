@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/09/20 08:30:23 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/09/30 21:01:04 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <mlx.h>
 # include <math.h>
 # include <stdlib.h>
+#include <stdio.h>
 
 typedef	struct		s_mlx
 {
@@ -42,20 +43,31 @@ typedef struct		s_ray
 
 typedef struct		s_sphere
 {
-	t_vec3d			position;
+	t_vec3d			origin;
 	double			radius;
 }					t_sphere;
+
+typedef struct		s_cam
+{
+	t_vec3d			origin;
+	t_vec3d			dir;
+	t_vec3d			dirvec;
+	t_vec3d			upvec;
+	t_vec3d			rightvec;
+	t_vec3d			viewplane_upleft;
+	double			viewplane_height;
+	double			viewplane_width;
+	double			xindent;
+	double			yindent;
+}					t_cam;
 
 typedef	struct		s_var
 {
 	int				win_abs;
 	int				win_ord;
-	t_vec3d			cam_o;
-	double			cam_d_x;
-	double			cam_d_y;
-	double			cam_d_z;
 	double			cam_dir;
 	t_sphere		sphere;
+	t_cam			cam;
 }					t_var;
 
 void				display(void);
@@ -65,5 +77,10 @@ t_var				*get_var(void);
 t_vec3d				*vector_copy(t_vec3d *a);
 double				vector_dot(t_vec3d *a, t_vec3d *b);
 void				vector_normalize(t_vec3d *v);
-t_vec3d				*vector_sub(t_vec3d *a, t_vec3d *b);
+t_vec3d				vector_sub(t_vec3d a, t_vec3d b);
+t_vec3d				vector_add(t_vec3d a, t_vec3d b);
+t_vec3d				vector_init(double x, double y, double z);
+t_vec3d				cross_product(t_vec3d a, t_vec3d b);
+t_vec3d				vector_multiply_real(t_vec3d a, double b);
+double				ft_carre(double x);
 #endif
