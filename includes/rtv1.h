@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/09/30 21:01:04 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/01 20:45:21 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,9 @@
 # include <mlx.h>
 # include <math.h>
 # include <stdlib.h>
+# include <fcntl.h>
 #include <stdio.h>
+#include "libft/includes/libft.h"
 
 typedef	struct		s_mlx
 {
@@ -61,12 +63,27 @@ typedef struct		s_cam
 	double			yindent;
 }					t_cam;
 
+union t_obj
+{
+	t_sphere		s;
+};
+
+typedef	struct		s_scene
+{
+	t_cam			*cam;
+	int				type_obj[20];
+	t_obj		obj[20];
+	int				obj_index;
+}					t_scene;
+
 typedef	struct		s_var
 {
 	int				win_abs;
 	int				win_ord;
 	double			cam_dir;
 	t_sphere		sphere;
+	t_sphere		sphere2;
+	t_scene			scene;
 	t_cam			cam;
 }					t_var;
 

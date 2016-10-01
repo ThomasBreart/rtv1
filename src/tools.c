@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 07:34:50 by tbreart           #+#    #+#             */
-/*   Updated: 2016/09/30 19:04:48 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/01 11:42:40 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,12 +20,12 @@ double		ft_carre(double x)
 
 void	vector_normalize(t_vec3d *v)
 {
-	double	id;
+	double	length;
 
-	id = 1.0 / sqrt( (v->x * v->x) + (v->y * v->y) + (v->z * v->z) );
-	v->x *= id;
-	v->y *= id;
-	v->z *= id;
+	length = sqrt((v->x * v->x) + (v->y * v->y) + (v->z * v->z));
+	v->x /= length;
+	v->y /= length;
+	v->z /= length;
 }
 
 double	vector_dot(t_vec3d *a, t_vec3d *b)

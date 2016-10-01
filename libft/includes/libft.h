@@ -6,7 +6,7 @@
 /*   By: tbreart <tbreart@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2014/11/04 13:15:52 by tbreart           #+#    #+#             */
-/*   Updated: 2016/09/18 02:11:07 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/01 16:38:44 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # include <string.h>
 # include <sys/types.h>
 # include "math.h"
+# include "get_next_line.h"
 
 typedef struct	s_options
 {
