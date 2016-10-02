@@ -6,7 +6,7 @@
 #    By: tbreart <marvin@42.fr>                     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2016/09/18 02:14:47 by tbreart           #+#    #+#              #
-#    Updated: 2016/09/20 08:48:04 by tbreart          ###   ########.fr        #
+#    Updated: 2016/10/02 13:56:44 by tbreart          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,7 +33,7 @@ $(NAME): $(OBJ) ./includes/rtv1.h ./Makefile
 
 %.o: %.c
 	@echo "-> Compiling $<"
-	@$(CC) $(FLAGS) -I includes/ -o $@ -c $<
+	@$(CC) $(FLAGS) $(IDIR) -o $@ -c $<
 
 clean:
 	@echo "Removing obj files"

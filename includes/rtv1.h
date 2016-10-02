@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/01 20:45:21 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/02 14:20:23 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,9 @@
 # include <stdlib.h>
 # include <fcntl.h>
 #include <stdio.h>
-#include "libft/includes/libft.h"
+#include "../libft/includes/libft.h"
+
+# define SPHERE 1
 
 typedef	struct		s_mlx
 {
@@ -63,16 +65,17 @@ typedef struct		s_cam
 	double			yindent;
 }					t_cam;
 
-union t_obj
+
+typedef	union		u_obj
 {
-	t_sphere		s;
-};
+	t_sphere		sphere;
+}					t_obj;
 
 typedef	struct		s_scene
 {
 	t_cam			*cam;
 	int				type_obj[20];
-	t_obj		obj[20];
+	t_obj			*obj[20];
 	int				obj_index;
 }					t_scene;
 
@@ -81,16 +84,13 @@ typedef	struct		s_var
 	int				win_abs;
 	int				win_ord;
 	double			cam_dir;
-	t_sphere		sphere;
-	t_sphere		sphere2;
-	t_scene			scene;
-	t_cam			cam;
 }					t_var;
 
 void				display(void);
 int					expose_hook(t_mlx *mlx);
 t_mlx				*get_mlx(void);
 t_var				*get_var(void);
+t_scene				*get_scene(void);
 t_vec3d				*vector_copy(t_vec3d *a);
 double				vector_dot(t_vec3d *a, t_vec3d *b);
 void				vector_normalize(t_vec3d *v);

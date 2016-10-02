@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:58:54 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/01 16:05:22 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/02 14:28:33 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,12 @@ void	init_cam(t_cam *cam, t_var *var)
 	t_vec3d		tmp4;
 	t_vec3d		tmp5;*/
 
-	cam->origin.x = 0;
+/*	cam->origin.x = 0;
 	cam->origin.y = 0;
 	cam->origin.z = 0;
 	cam->dir.x = 0;//
 	cam->dir.y = 0;//
-	cam->dir.z = 100;
+	cam->dir.z = 100;*/
 	cam->viewplane_height = 0.5;
 	cam->viewplane_width = 0.5;
 	cam->xindent = cam->viewplane_width / (double)var->win_abs;
@@ -65,18 +65,20 @@ void	display(void)
 {
 	t_mlx	*mlx;
 	t_var	*var;
+	t_scene		*scene;
 
 	mlx = get_mlx();
 	var = get_var();
-	init_cam(&var->cam, var);
-	var->sphere.origin.x = 2;
+	scene = get_scene();
+	init_cam(scene->cam, var);
+/*	var->sphere.origin.x = 2;
 	var->sphere.origin.y = 2;
 	var->sphere.origin.z = 20;
 	var->sphere.radius = 2;
 	var->sphere2.origin.x = 0;
 	var->sphere2.origin.y = 0;
 	var->sphere2.origin.z = 10;
-	var->sphere2.radius = 2;
+	var->sphere2.radius = 2;*/
 //	init_scene(var);
 	//init_light
 	mlx->mlx = mlx_init();
