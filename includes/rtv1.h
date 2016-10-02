@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/02 14:20:23 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/02 20:03:04 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 #include "../libft/includes/libft.h"
 
 # define SPHERE 1
+# define PLAN 2
 
 typedef	struct		s_mlx
 {
@@ -49,7 +50,22 @@ typedef struct		s_sphere
 {
 	t_vec3d			origin;
 	double			radius;
+	double			r;
+	double			g;
+	double			b;
+	//double			color;
 }					t_sphere;
+
+typedef struct		s_plan
+{
+	t_vec3d			origin;
+	t_vec3d			normale;
+	double			d;
+	double			r;
+	double			g;
+	double			b;
+	//double			color;
+}					t_plan;
 
 typedef struct		s_cam
 {
@@ -69,6 +85,7 @@ typedef struct		s_cam
 typedef	union		u_obj
 {
 	t_sphere		sphere;
+	t_plan			plan;
 }					t_obj;
 
 typedef	struct		s_scene
@@ -78,6 +95,13 @@ typedef	struct		s_scene
 	t_obj			*obj[20];
 	int				obj_index;
 }					t_scene;
+
+typedef	struct		s_near
+{
+	double			lenght;
+	int				type_obj;
+	t_obj			*obj;
+}					t_near;
 
 typedef	struct		s_var
 {

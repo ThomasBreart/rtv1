@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 07:52:21 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/02 14:27:44 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/02 19:46:42 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,38 +20,6 @@ t_ray	create_ray(t_vec3d o, t_vec3d d)
 	ray.d = d;
 	return (ray);
 }
-/*
-int		intersection_sphere(t_sphere *sphere, t_ray *ray, double *coef)
-{
-	t_vec3d		*dist;
-	double		b;
-	double		d;
-	double		t0;
-	double		t1;
-	int			result;
-
-	result = -1;
-	dist = vector_copy(&sphere->origin);
-	*dist = vector_sub(*dist, ray->o);
-	b = vector_dot(&ray->d, dist);
-	d = b * b - vector_dot(dist, dist) + sphere->radius * sphere->radius;
-	if (d < 0)
-		return (result);
-	t0 = b - sqrt(d);
-	t1 = b + sqrt(d);
-	if (t0 > 0.1 && t0 < *coef)
-	{
-		*coef = t0;
-		result = 1; // return a la place ?
-	}
-	if (t1 > 0.1 && t1 < *coef)
-	{
-		*coef = t1;
-		result = 1;
-	}
-	return (result);
-}
-*/
 
 int		intersection_sphere(t_sphere *sphere, t_ray *ray, double *near)
 {
@@ -96,6 +64,32 @@ int		intersection_sphere(t_sphere *sphere, t_ray *ray, double *near)
 	return (0);
 }
 
+int		intersection_plan(t_plan *plan, t_ray *ray, double *near)
+{
+	double	hit;
+	double	tmp;
+
+	hit = plan->normale.x * (ray->o.x - plan->origin.x);
+	hit += plan->normale.y * (ray->o.y - plan->origin.y);
+	hit += plan->normale.z * (ray->o.z - plan->origin.z);
+	hit += plan->d;
+	tmp = plan->normale.x * ray->d.x + plan->normale.y * ray->d.y + plan->normale.z * ray->d.z;
+	hit /= tmp;
+	hit *= -1;
+	if (hit < *near && hit > 0)
+	{
+		*near = hit;
+		return (1);
+	}
+	return (0);
+}
+
+void	object_hit(t_near *near, int type_obj, t_obj *obj)
+{
+	near->type_obj = type_obj;
+	near->obj = obj;
+}
+
 int		expose_hook(t_mlx *mlx)
 {
 	t_var	*var;
@@ -105,8 +99,9 @@ int		expose_hook(t_mlx *mlx)
 	t_vec3d		target;
 	t_vec3d		ray_direction;
 	t_ray		ray;
-	double		near;
+	t_near		near;
 	int			s;
+	int			i;
 
 	var = get_var();
 	scene = get_scene();
@@ -116,7 +111,8 @@ int		expose_hook(t_mlx *mlx)
 		x = 0;
 		while (x < var->win_abs)
 		{
-			near = 200000;
+			near.lenght = 20000;
+			near.obj = NULL;
 			s = -1;
 			target = vector_add(scene->cam->viewplane_upleft, vector_multiply_real(scene->cam->rightvec, scene->cam->xindent * x));
 			target = vector_sub(target, vector_multiply_real(scene->cam->upvec, scene->cam->yindent * y));
@@ -131,15 +127,27 @@ int		expose_hook(t_mlx *mlx)
 			vector_normalize(&ray_direction);
 
 			ray = create_ray(scene->cam->origin, target); // target ou ray_direction ?
-	//		coef = 20000;
-			if (intersection_sphere((t_sphere*)scene->obj[0], &ray, &near) == 1)
-				s = 1;
-			if (intersection_sphere((t_sphere*)scene->obj[1], &ray, &near) == 1)
-				s = 2;
-			if (s == 1)
+			i = 0;
+			while (i <= scene->obj_index)
+			{
+				if (scene->type_obj[i] == SPHERE)
+				{
+					if (intersection_sphere((t_sphere*)scene->obj[i], &ray, &near.lenght) == 1)
+						object_hit(&near, SPHERE, scene->obj[i]);
+				}
+				else if (scene->type_obj[i] == PLAN)
+				{
+					if (intersection_plan((t_plan*)scene->obj[i], &ray, &near.lenght) == 1)
+						object_hit(&near, PLAN, scene->obj[i]);
+				}
+				++i;
+			}
+			if (near.obj != NULL && near.obj->sphere.origin.x == -2)
 				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0xFF0000));
-			if (s == 2)
+			if (near.obj != NULL && near.obj->sphere.origin.x == 2)
 				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0x00FF00));
+			if (near.obj != NULL && near.obj->plan.origin.x == 0)
+				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0x0000FF));
 //				img_pixel_put(mlx, x, y, 1);//sphere touchay !
 			++x;
 		}
