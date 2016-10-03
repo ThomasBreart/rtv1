@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 07:52:21 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/02 19:46:42 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/03 17:57:45 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int		expose_hook(t_mlx *mlx)
 	t_near		near;
 	int			s;
 	int			i;
+	int			color;
 
 	var = get_var();
 	scene = get_scene();
@@ -142,13 +143,31 @@ int		expose_hook(t_mlx *mlx)
 				}
 				++i;
 			}
+			if (near.obj != NULL)
+			{
+				color = 0;
+				if (near.type_obj == SPHERE)
+				{
+					color = ((color | (unsigned char)near.obj->sphere.r)<< 8);
+					color = ((color | (unsigned char)near.obj->sphere.g)<< 8);
+					color = ((color | (unsigned char)near.obj->sphere.b));
+					mlx_pixel_put(mlx->mlx, mlx->win, x, y, color);
+				}
+				else if (near.type_obj == PLAN)
+				{
+					color = ((color | (unsigned char)near.obj->plan.r)<< 8);
+					color = ((color | (unsigned char)near.obj->plan.g)<< 8);
+					color = ((color | (unsigned char)near.obj->plan.b));
+					mlx_pixel_put(mlx->mlx, mlx->win, x, y, color);
+				}
+			}/*
 			if (near.obj != NULL && near.obj->sphere.origin.x == -2)
 				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0xFF0000));
 			if (near.obj != NULL && near.obj->sphere.origin.x == 2)
 				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0x00FF00));
 			if (near.obj != NULL && near.obj->plan.origin.x == 0)
 				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0x0000FF));
-//				img_pixel_put(mlx, x, y, 1);//sphere touchay !
+//				img_pixel_put(mlx, x, y, 1);//sphere touchay !*/
 			++x;
 		}
 		++y;
