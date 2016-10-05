@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/03 16:41:38 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/05 22:51:13 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,18 @@ typedef struct		s_ray
 	t_vec3d			d;
 }					t_ray;
 
+typedef	struct		s_obj
+{
+	int				type;
+	t_vec3d			origin;
+	t_vec3d			normale;
+	double			radius;
+	double			d;
+	double			r;
+	double			g;
+	double			b;
+}					t_obj;
+/*
 typedef struct		s_sphere
 {
 	t_vec3d			origin;
@@ -66,7 +78,7 @@ typedef struct		s_plan
 	double			b;
 	//double			color;
 }					t_plan;
-
+*/
 typedef struct		s_cam
 {
 	t_vec3d			origin;
@@ -75,6 +87,7 @@ typedef struct		s_cam
 	t_vec3d			upvec;
 	t_vec3d			rightvec;
 	t_vec3d			viewplane_upleft;
+	char			init;
 	double			viewplane_height;
 	double			viewplane_width;
 	double			xindent;
@@ -82,24 +95,26 @@ typedef struct		s_cam
 }					t_cam;
 
 
-typedef	union		u_obj
-{
-	t_sphere		sphere;
-	t_plan			plan;
-}					t_obj;
-
 typedef	struct		s_scene
 {
-	t_cam			*cam;
-	int				type_obj[20];
-	t_obj			*obj[20];
+	t_cam			cam;
+//	int				type_obj[20];
+	t_obj			obj[20];
 	int				obj_index;
 }					t_scene;
+
+typedef	struct		s_light
+{
+	t_vec3d			origin;
+	double			r;
+	double			g;
+	double			b;
+}					t_light;
 
 typedef	struct		s_near
 {
 	double			lenght;
-	int				type_obj;
+//	int				type_obj;
 	t_obj			*obj;
 }					t_near;
 
@@ -110,11 +125,20 @@ typedef	struct		s_var
 	double			cam_dir;
 }					t_var;
 
+void				add_cam(char *line);
+void				add_plan(char *line);
+void				add_sphere(char *line);
 void				display(void);
 int					expose_hook(t_mlx *mlx);
+void				extract_data(char **tab, double *coords, int max_data, char last_hexa);
+double				ft_atod_h(char *str);
 t_mlx				*get_mlx(void);
 t_var				*get_var(void);
 t_scene				*get_scene(void);
+int					intersection_plan(t_obj *plan, t_ray *ray, double *near);
+int					intersection_sphere(t_obj *sphere, t_ray *ray, double *near);
+int					parse_scene(void);
+char				**split_data(char *str, int max_data, char *object_name);
 t_vec3d				*vector_copy(t_vec3d *a);
 double				vector_dot(t_vec3d *a, t_vec3d *b);
 void				vector_normalize(t_vec3d *v);

@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:58:54 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/02 14:34:32 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/05 22:37:16 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	display(void)
 	mlx = get_mlx();
 	var = get_var();
 	scene = get_scene();
-	init_cam(scene->cam, var);
+	init_cam(&scene->cam, var);
 	//debug_cam(scene->cam);
 	//init_light
 	mlx->mlx = mlx_init();

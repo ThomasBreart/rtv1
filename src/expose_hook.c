@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 07:52:21 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/03 17:57:45 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/05 23:56:22 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,78 +16,65 @@ t_ray	create_ray(t_vec3d o, t_vec3d d)
 {
 	t_ray	ray;
 
-	ray.o = o;// pas sur de l assignation structure
+	ray.o = o;
 	ray.d = d;
 	return (ray);
 }
 
-int		intersection_sphere(t_sphere *sphere, t_ray *ray, double *near)
+void	shoot_obj(t_scene *scene, t_ray *ray, t_near *near)
 {
-	double		a;
+	int		i;
+
+	i = 0;
+	while (i <= scene->obj_index)
+	{
+		if (scene->obj[i].type == SPHERE)
+		{
+			if (intersection_sphere(&scene->obj[i], ray, &near->lenght) == 1)
+				near->obj = &scene->obj[i];
+		}
+		else if (scene->obj[i].type == PLAN)
+		{
+			if (intersection_plan(&scene->obj[i], ray, &near->lenght) == 1)
+				near->obj = &scene->obj[i];
+		}
+		++i;
+	}
+}
+
+int		find_color(t_near near, t_ray ray, t_light light, t_vec3d hit)
+{
+	t_vec3d		normale;
+	double		angle;
+	double		r;
+	double		g;
 	double		b;
-	double		c;
-	double		delta;
-	double		t1;
-	double		t2;
-	double		hit;
+	int			color;
 
-	a = ray->d.x * ray->d.x + ray->d.y * ray->d.y + ray->d.z * ray->d.z;
-	b = 2.0 * (ray->d.x * (ray->o.x - sphere->origin.x) + ray->d.y * (ray->o.y - sphere->origin.y) + ray->d.z * (ray->o.z - sphere->origin.z));
-	c = ft_carre(ray->o.x - sphere->origin.x) + ft_carre(ray->o.y - sphere->origin.y) + ft_carre(ray->o.z - sphere->origin.z) - ft_carre(sphere->radius);
-
-	delta = ft_carre(b) - (4.0 * a * c);
-	if (delta < 0)
-		return (0);
-	if (delta == 0)
+	color = 0;
+	if (near.obj->type == SPHERE)
+		normale = vector_sub(hit, near.obj->origin);
+	else if (near.obj->type == PLAN)
+		normale = near.obj->normale;
+	vector_normalize(&normale);
+	angle = vector_dot(&normale, &ray.d);
+	if (angle >= 0)
 	{
-		hit = b * -1.0 / (2.0 * a);
-		if (*near > hit)
-		{
-			*near = hit;
-			return (1);
-		}
+		r = 0;
+		g = 255;
+		b = 0;
 	}
-	else
+	if (angle < 0)
 	{
-		t1 = ((b * -1.0) + sqrt(delta)) / (2.0 * a);
-		t2 = ((b * -1.0) - sqrt(delta)) / (2.0 * a);
-		if (t1 < t2)
-			hit = t1;
-		else
-			hit = t2;
-		if (*near > hit)
-		{
-			*near = hit;
-			return (1);
-		}
+		angle *= -1;
+		r = near.obj->r * light.r / 255.0 * angle;
+		g = near.obj->g * light.g / 255.0 * angle;
+		b = near.obj->b * light.b / 255.0 * angle;
 	}
-	return (0);
-}
-
-int		intersection_plan(t_plan *plan, t_ray *ray, double *near)
-{
-	double	hit;
-	double	tmp;
-
-	hit = plan->normale.x * (ray->o.x - plan->origin.x);
-	hit += plan->normale.y * (ray->o.y - plan->origin.y);
-	hit += plan->normale.z * (ray->o.z - plan->origin.z);
-	hit += plan->d;
-	tmp = plan->normale.x * ray->d.x + plan->normale.y * ray->d.y + plan->normale.z * ray->d.z;
-	hit /= tmp;
-	hit *= -1;
-	if (hit < *near && hit > 0)
-	{
-		*near = hit;
-		return (1);
-	}
-	return (0);
-}
-
-void	object_hit(t_near *near, int type_obj, t_obj *obj)
-{
-	near->type_obj = type_obj;
-	near->obj = obj;
+	color = ((color | (unsigned char)r)<< 8);
+	color = ((color | (unsigned char)g)<< 8);
+	color = ((color | (unsigned char)b));
+	return (color);
 }
 
 int		expose_hook(t_mlx *mlx)
@@ -100,9 +87,12 @@ int		expose_hook(t_mlx *mlx)
 	t_vec3d		ray_direction;
 	t_ray		ray;
 	t_near		near;
+	t_near		near2;
 	int			s;
 	int			i;
 	int			color;
+	t_vec3d		hit;
+	t_light		light;
 
 	var = get_var();
 	scene = get_scene();
@@ -115,59 +105,39 @@ int		expose_hook(t_mlx *mlx)
 			near.lenght = 20000;
 			near.obj = NULL;
 			s = -1;
-			target = vector_add(scene->cam->viewplane_upleft, vector_multiply_real(scene->cam->rightvec, scene->cam->xindent * x));
-			target = vector_sub(target, vector_multiply_real(scene->cam->upvec, scene->cam->yindent * y));
-		/*	target.x = x - (var->win_abs / 2);
-			target.y = y - (var->win_ord / 2);
-			target.z = -(var->win_abs / (2 * tan(var->cam_d_z / 2)));*/
+			target = vector_add(scene->cam.viewplane_upleft, vector_multiply_real(scene->cam.rightvec, scene->cam.xindent * x));
+			target = vector_sub(target, vector_multiply_real(scene->cam.upvec, scene->cam.yindent * y));
 			vector_normalize(&target);
-	/*		ray_direction.x = target.x - var->cam_o.x;
-			ray_direction.y = target.y - var->cam_o.y;
-			ray_direction.z = target.z - var->cam_o.z;*/
-			ray_direction = vector_sub(target, scene->cam->origin);
+			ray_direction = vector_sub(target, scene->cam.origin);
 			vector_normalize(&ray_direction);
 
-			ray = create_ray(scene->cam->origin, target); // target ou ray_direction ?
-			i = 0;
-			while (i <= scene->obj_index)
-			{
-				if (scene->type_obj[i] == SPHERE)
-				{
-					if (intersection_sphere((t_sphere*)scene->obj[i], &ray, &near.lenght) == 1)
-						object_hit(&near, SPHERE, scene->obj[i]);
-				}
-				else if (scene->type_obj[i] == PLAN)
-				{
-					if (intersection_plan((t_plan*)scene->obj[i], &ray, &near.lenght) == 1)
-						object_hit(&near, PLAN, scene->obj[i]);
-				}
-				++i;
-			}
+			ray = create_ray(scene->cam.origin, target); // target ou ray_direction ?
+			shoot_obj(scene, &ray, &near);
 			if (near.obj != NULL)
 			{
 				color = 0;
-				if (near.type_obj == SPHERE)
-				{
-					color = ((color | (unsigned char)near.obj->sphere.r)<< 8);
-					color = ((color | (unsigned char)near.obj->sphere.g)<< 8);
-					color = ((color | (unsigned char)near.obj->sphere.b));
-					mlx_pixel_put(mlx->mlx, mlx->win, x, y, color);
-				}
-				else if (near.type_obj == PLAN)
-				{
-					color = ((color | (unsigned char)near.obj->plan.r)<< 8);
-					color = ((color | (unsigned char)near.obj->plan.g)<< 8);
-					color = ((color | (unsigned char)near.obj->plan.b));
-					mlx_pixel_put(mlx->mlx, mlx->win, x, y, color);
-				}
-			}/*
-			if (near.obj != NULL && near.obj->sphere.origin.x == -2)
-				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0xFF0000));
-			if (near.obj != NULL && near.obj->sphere.origin.x == 2)
-				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0x00FF00));
-			if (near.obj != NULL && near.obj->plan.origin.x == 0)
-				mlx_pixel_put(mlx->mlx, mlx->win, x, y, mlx_get_color_value(mlx->mlx, 0x0000FF));
-//				img_pixel_put(mlx, x, y, 1);//sphere touchay !*/
+				hit = vector_multiply_real(ray.d, near.lenght);
+				hit = vector_add(scene->cam.origin, hit);
+				//while light
+				light.origin.x = 0;
+				light.origin.y = -3.5;
+				light.origin.z = 30;
+				light.r = 255;
+				light.g = 255;
+				light.b = 255;
+				ray.o = light.origin;
+				ray.d = vector_sub(hit, ray.o);
+				vector_normalize(&ray.d);
+				i = 0;
+				near2.lenght = 20000;
+				near2.obj = NULL;
+				shoot_obj(scene, &ray, &near2);
+				if (near.obj ==  near2.obj)
+					color = find_color(near, ray, light, hit);
+				else
+					color = 255;
+				mlx_pixel_put(mlx->mlx, mlx->win, x, y, color);
+			}
 			++x;
 		}
 		++y;
