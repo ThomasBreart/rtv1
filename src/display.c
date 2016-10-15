@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:58:54 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/05 22:37:16 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/06 00:03:23 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	init_cam(t_cam *cam, t_var *var)
 	cam->upvec = vector_init(0, 1, 0);
 	cam->rightvec = cross_product(cam->upvec, cam->dirvec); ///
 	cam->upvec = cross_product(cam->dirvec, cam->rightvec); ///
-	vector_normalize(&cam->dirvec);
+//	vector_normalize(&cam->dirvec);
 	vector_normalize(&cam->upvec);
 	vector_normalize(&cam->rightvec);
 	cam->viewplane_upleft = vector_init(cam->origin.x, cam->origin.y, cam->origin.z);
@@ -52,7 +52,7 @@ void	display(void)
 	var = get_var();
 	scene = get_scene();
 	init_cam(&scene->cam, var);
-	//debug_cam(scene->cam);
+	debug_cam(&scene->cam);
 	//init_light
 	mlx->mlx = mlx_init();
 	mlx->win = mlx_new_window(mlx->mlx, var->win_abs, var->win_ord, "RTV1 - 42");

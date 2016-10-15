@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 22:38:47 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/05 22:49:46 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/15 08:53:45 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ static int		delta_pos(double a, double b, double delta, double *near)
 		hit = t1;
 	else
 		hit = t2;
-	if (hit < *near)
+	if (hit < *near && hit > 0)
 	{
 		*near = hit;
 		return (1);

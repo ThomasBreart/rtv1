@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 07:52:21 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/05 23:56:22 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/15 09:45:22 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		find_color(t_near near, t_ray ray, t_light light, t_vec3d hit)
 	if (angle >= 0)
 	{
 		r = 0;
-		g = 255;
+		g = 0;
 		b = 0;
 	}
 	if (angle < 0)
@@ -84,7 +84,7 @@ int		expose_hook(t_mlx *mlx)
 	int		y;
 	int		x;
 	t_vec3d		target;
-	t_vec3d		ray_direction;
+//	t_vec3d		ray_direction;
 	t_ray		ray;
 	t_near		near;
 	t_near		near2;
@@ -92,7 +92,7 @@ int		expose_hook(t_mlx *mlx)
 	int			i;
 	int			color;
 	t_vec3d		hit;
-	t_light		light;
+	//t_light		light;
 
 	var = get_var();
 	scene = get_scene();
@@ -107,9 +107,10 @@ int		expose_hook(t_mlx *mlx)
 			s = -1;
 			target = vector_add(scene->cam.viewplane_upleft, vector_multiply_real(scene->cam.rightvec, scene->cam.xindent * x));
 			target = vector_sub(target, vector_multiply_real(scene->cam.upvec, scene->cam.yindent * y));
+			target = vector_sub(target, scene->cam.origin); //lol pierre erick
 			vector_normalize(&target);
-			ray_direction = vector_sub(target, scene->cam.origin);
-			vector_normalize(&ray_direction);
+		//	ray_direction = vector_sub(target, scene->cam.origin);// pas utile ?
+		//	vector_normalize(&ray_direction);
 
 			ray = create_ray(scene->cam.origin, target); // target ou ray_direction ?
 			shoot_obj(scene, &ray, &near);
@@ -119,13 +120,7 @@ int		expose_hook(t_mlx *mlx)
 				hit = vector_multiply_real(ray.d, near.lenght);
 				hit = vector_add(scene->cam.origin, hit);
 				//while light
-				light.origin.x = 0;
-				light.origin.y = -3.5;
-				light.origin.z = 30;
-				light.r = 255;
-				light.g = 255;
-				light.b = 255;
-				ray.o = light.origin;
+				ray.o = scene->light[scene->light_index].origin;
 				ray.d = vector_sub(hit, ray.o);
 				vector_normalize(&ray.d);
 				i = 0;
@@ -133,9 +128,18 @@ int		expose_hook(t_mlx *mlx)
 				near2.obj = NULL;
 				shoot_obj(scene, &ray, &near2);
 				if (near.obj ==  near2.obj)
-					color = find_color(near, ray, light, hit);
+					color = find_color(near, ray, scene->light[scene->light_index], hit);
 				else
-					color = 255;
+				{
+					if (x == 500 && y == 900)
+					{
+						printf("iep\n");
+						printf("obj_origin: x:%f, y:%f, z:%f\n", near2.obj->origin.x, near2.obj->origin.y, near2.obj->origin.z);
+					}
+				//	color = 255;
+				}
+				if (x >= 495 && x <=505 && y >= 495 && y<= 505)
+					color = 255*255*255;
 				mlx_pixel_put(mlx->mlx, mlx->win, x, y, color);
 			}
 			++x;

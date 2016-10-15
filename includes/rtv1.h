@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/05 22:51:13 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/15 09:40:40 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,8 @@
 
 # define SPHERE 1
 # define PLAN 2
+
+# define OMNI_LIGHT 100
 
 typedef	struct		s_mlx
 {
@@ -94,22 +96,24 @@ typedef struct		s_cam
 	double			yindent;
 }					t_cam;
 
+typedef	struct		s_light
+{
+	int				type;
+	t_vec3d			origin;
+	double			r;
+	double			g;
+	double			b;
+}					t_light;
 
 typedef	struct		s_scene
 {
 	t_cam			cam;
 //	int				type_obj[20];
 	t_obj			obj[20];
+	t_light			light[20];
 	int				obj_index;
+	int				light_index;
 }					t_scene;
-
-typedef	struct		s_light
-{
-	t_vec3d			origin;
-	double			r;
-	double			g;
-	double			b;
-}					t_light;
 
 typedef	struct		s_near
 {
@@ -126,6 +130,7 @@ typedef	struct		s_var
 }					t_var;
 
 void				add_cam(char *line);
+void				add_light(char *line);
 void				add_plan(char *line);
 void				add_sphere(char *line);
 void				display(void);

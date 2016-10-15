@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:48:47 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/05 22:36:17 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/15 09:33:18 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	init(void)
 	var->win_ord = 1000;
 	scene->cam.init = 0;
 	scene->obj_index = -1;
+	scene->light_index = -1;
 }
 
 void	debug_parser(void)

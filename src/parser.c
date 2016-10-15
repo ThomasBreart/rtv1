@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 22:24:45 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/05 23:09:16 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/15 09:40:59 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,8 @@ int		parse_scene(void)
 			add_sphere(line);
 		else if (ft_strncmp("plan", line, 4) == 0)
 			add_plan(line);
+		else if (ft_strncmp("light", line, 5) == 0)
+			add_light(line);
 		ft_strdel(&line);
 	}
 	close(fd);
