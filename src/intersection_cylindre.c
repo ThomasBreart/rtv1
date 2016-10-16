@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersection_sphere.c                              :+:      :+:    :+:   */
+/*   intersection_cylindre.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/05 22:38:47 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/15 12:56:43 by tbreart          ###   ########.fr       */
+/*   Created: 2016/10/15 11:33:26 by tbreart           #+#    #+#             */
+/*   Updated: 2016/10/15 14:00:12 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,19 @@ static int		delta_pos(double a, double b, double delta, double *near)
 	return (0);
 }
 
-int		intersection_sphere(t_obj *sphere, t_ray *ray, double *near)
+int		intersection_cylinder(t_obj *cylinder, t_ray *ray, double *near)
 {
 	double		a;
 	double		b;
 	double		c;
 	double		delta;
+	t_vec3d		x;
 
-	a = ray->d.x * ray->d.x + ray->d.y * ray->d.y + ray->d.z * ray->d.z;
-	b = 2.0 * (ray->d.x * (ray->o.x - sphere->origin.x) +
-		ray->d.y * (ray->o.y - sphere->origin.y) +
-		ray->d.z * (ray->o.z - sphere->origin.z));
-	c = ft_carre(ray->o.x - sphere->origin.x) +
-		ft_carre(ray->o.y - sphere->origin.y) +
-		ft_carre(ray->o.z - sphere->origin.z) - ft_carre(sphere->radius);
+	x = vector_sub(ray->o, cylinder->origin);
+	a = vector_dot(&ray->d, &ray->d) - ft_carre(vector_dot(&ray->d, &cylinder->normale));
+	b = 2.0 * (vector_dot(&ray->d, &x) -
+			(vector_dot(&ray->d, &cylinder->normale) * vector_dot(&x, &cylinder->normale)));
+	c = vector_dot(&x, &x) - ft_carre(vector_dot(&x, &cylinder->normale)) - ft_carre(cylinder->radius);
 	delta = ft_carre(b) - (4.0 * a * c);
 	if (delta < 0)
 		return (0);

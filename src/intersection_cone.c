@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   intersection_sphere.c                              :+:      :+:    :+:   */
+/*   intersection_cone.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/05 22:38:47 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/15 12:56:43 by tbreart          ###   ########.fr       */
+/*   Created: 2016/10/16 09:39:37 by tbreart           #+#    #+#             */
+/*   Updated: 2016/10/16 10:37:35 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,20 +45,23 @@ static int		delta_pos(double a, double b, double delta, double *near)
 	return (0);
 }
 
-int		intersection_sphere(t_obj *sphere, t_ray *ray, double *near)
+int		intersection_cone(t_obj *cone, t_ray *ray, double *near)
 {
 	double		a;
 	double		b;
 	double		c;
 	double		delta;
+	double		tmp;
+	t_vec3d		x;
 
-	a = ray->d.x * ray->d.x + ray->d.y * ray->d.y + ray->d.z * ray->d.z;
-	b = 2.0 * (ray->d.x * (ray->o.x - sphere->origin.x) +
-		ray->d.y * (ray->o.y - sphere->origin.y) +
-		ray->d.z * (ray->o.z - sphere->origin.z));
-	c = ft_carre(ray->o.x - sphere->origin.x) +
-		ft_carre(ray->o.y - sphere->origin.y) +
-		ft_carre(ray->o.z - sphere->origin.z) - ft_carre(sphere->radius);
+	x = vector_sub(ray->o, cone->origin);
+	tmp = (1.0 + cone->radius * cone->radius) * ft_carre(vector_dot(&ray->d, &cone->normale));
+	a = vector_dot(&ray->d, &ray->d) - tmp;
+	tmp = (1.0 + cone->radius * cone->radius) * vector_dot(&ray->d, &cone->normale) * vector_dot(&x, &cone->normale);
+	b = 2 * (vector_dot(&ray->d, &x) - tmp);
+	tmp = (1.0 + cone->radius * cone->radius) * ft_carre(vector_dot(&x, &cone->normale));
+	c = vector_dot(&x, &x) - tmp;
+
 	delta = ft_carre(b) - (4.0 * a * c);
 	if (delta < 0)
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/15 09:40:40 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/16 12:46:11 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,8 +22,14 @@
 
 # define SPHERE 1
 # define PLAN 2
+# define CYLINDER 3
+# define CONE 4
 
 # define OMNI_LIGHT 100
+
+# define KEY_ESC 53
+
+# define MAX_LENGHT_RAY 200000
 
 typedef	struct		s_mlx
 {
@@ -42,12 +48,6 @@ typedef struct		s_vec3d
 	double			z;
 }					t_vec3d;
 
-typedef struct		s_ray
-{
-	t_vec3d			o;
-	t_vec3d			d;
-}					t_ray;
-
 typedef	struct		s_obj
 {
 	int				type;
@@ -59,28 +59,15 @@ typedef	struct		s_obj
 	double			g;
 	double			b;
 }					t_obj;
-/*
-typedef struct		s_sphere
-{
-	t_vec3d			origin;
-	double			radius;
-	double			r;
-	double			g;
-	double			b;
-	//double			color;
-}					t_sphere;
 
-typedef struct		s_plan
+typedef struct		s_ray
 {
-	t_vec3d			origin;
-	t_vec3d			normale;
-	double			d;
-	double			r;
-	double			g;
-	double			b;
-	//double			color;
-}					t_plan;
-*/
+	t_vec3d			o;
+	t_vec3d			d;
+	double			lenght;
+	t_obj			*obj;
+}					t_ray;
+
 typedef struct		s_cam
 {
 	t_vec3d			origin;
@@ -108,7 +95,6 @@ typedef	struct		s_light
 typedef	struct		s_scene
 {
 	t_cam			cam;
-//	int				type_obj[20];
 	t_obj			obj[20];
 	t_light			light[20];
 	int				obj_index;
@@ -118,7 +104,6 @@ typedef	struct		s_scene
 typedef	struct		s_near
 {
 	double			lenght;
-//	int				type_obj;
 	t_obj			*obj;
 }					t_near;
 
@@ -129,7 +114,12 @@ typedef	struct		s_var
 	double			cam_dir;
 }					t_var;
 
+void				debug_cam(t_cam *cam);
+
+void				raytracer(t_mlx *mlx);
 void				add_cam(char *line);
+void				add_cone(char *line);
+void				add_cylinder(char *line);
 void				add_light(char *line);
 void				add_plan(char *line);
 void				add_sphere(char *line);
@@ -140,9 +130,14 @@ double				ft_atod_h(char *str);
 t_mlx				*get_mlx(void);
 t_var				*get_var(void);
 t_scene				*get_scene(void);
+void				img_pixel_put(t_mlx *mlx, int x, int y, unsigned int color);
+int					intersection_cone(t_obj *plan, t_ray *ray, double *near);
+int					intersection_cylinder(t_obj *plan, t_ray *ray, double *near);
 int					intersection_plan(t_obj *plan, t_ray *ray, double *near);
 int					intersection_sphere(t_obj *sphere, t_ray *ray, double *near);
+int					key_hook(int keycode);
 int					parse_scene(void);
+void				prepare_draw(t_mlx *mlx);
 char				**split_data(char *str, int max_data, char *object_name);
 t_vec3d				*vector_copy(t_vec3d *a);
 double				vector_dot(t_vec3d *a, t_vec3d *b);
