@@ -6,13 +6,13 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 22:50:14 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/05 22:51:15 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/16 13:45:21 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-int		intersection_plan(t_obj *plan, t_ray *ray, double *near)
+int		intersection_plan(t_obj *plan, t_ray *ray)
 {
 	double	hit;
 	double	tmp;
@@ -25,9 +25,9 @@ int		intersection_plan(t_obj *plan, t_ray *ray, double *near)
 			plan->normale.z * ray->d.z;
 	hit /= tmp;
 	hit *= -1;
-	if (hit < *near && hit > 0)
+	if (hit < ray->lenght && hit > 0)
 	{
-		*near = hit;
+		ray->lenght = hit;
 		return (1);
 	}
 	return (0);

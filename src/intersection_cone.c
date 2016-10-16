@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/16 09:39:37 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 10:37:35 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/16 20:20:23 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int		delta_pos(double a, double b, double delta, double *near)
 	return (0);
 }
 
-int		intersection_cone(t_obj *cone, t_ray *ray, double *near)
+int		intersection_cone(t_obj *cone, t_ray *ray)
 {
 	double		a;
 	double		b;
@@ -66,8 +66,8 @@ int		intersection_cone(t_obj *cone, t_ray *ray, double *near)
 	if (delta < 0)
 		return (0);
 	if (delta == 0)
-		return (delta_zero(a, b, near));
+		return (delta_zero(a, b, &ray->lenght));
 	else
-		return (delta_pos(a, b, delta, near));
+		return (delta_pos(a, b, delta, &ray->lenght));
 	return (0);
 }

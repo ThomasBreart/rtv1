@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 12:46:11 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/16 19:17:38 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,13 +116,15 @@ typedef	struct		s_var
 
 void				debug_cam(t_cam *cam);
 
-void				raytracer(t_mlx *mlx);
+void				raytracer(t_mlx *mlx, t_scene *scene, t_var *var);
 void				add_cam(char *line);
 void				add_cone(char *line);
 void				add_cylinder(char *line);
 void				add_light(char *line);
 void				add_plan(char *line);
 void				add_sphere(char *line);
+t_ray				create_light_ray(t_light *light, t_vec3d hit);
+t_ray				create_cam_ray(double x, double y);
 void				display(void);
 int					expose_hook(t_mlx *mlx);
 void				extract_data(char **tab, double *coords, int max_data, char last_hexa);
@@ -131,13 +133,13 @@ t_mlx				*get_mlx(void);
 t_var				*get_var(void);
 t_scene				*get_scene(void);
 void				img_pixel_put(t_mlx *mlx, int x, int y, unsigned int color);
-int					intersection_cone(t_obj *plan, t_ray *ray, double *near);
-int					intersection_cylinder(t_obj *plan, t_ray *ray, double *near);
-int					intersection_plan(t_obj *plan, t_ray *ray, double *near);
-int					intersection_sphere(t_obj *sphere, t_ray *ray, double *near);
+int					intersection_cone(t_obj *plan, t_ray *ray);
+int					intersection_cylinder(t_obj *plan, t_ray *ray);
+int					intersection_plan(t_obj *plan, t_ray *ray);
+int					intersection_sphere(t_obj *sphere, t_ray *ray);
 int					key_hook(int keycode);
 int					parse_scene(void);
-void				prepare_draw(t_mlx *mlx);
+void				prepare_draw(t_mlx *mlx, t_var *var);
 char				**split_data(char *str, int max_data, char *object_name);
 t_vec3d				*vector_copy(t_vec3d *a);
 double				vector_dot(t_vec3d *a, t_vec3d *b);

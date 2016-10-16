@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:58:54 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 12:13:02 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/16 19:28:59 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,10 @@ void	init_cam(t_cam *cam, t_var *var)
 			vector_multiply_real(cam->rightvec, cam->viewplane_width / 2.0));
 }
 
-void	prepare_draw(t_mlx *mlx)
+void	prepare_draw(t_mlx *mlx, t_var *var)
 {
 	int		endian;
-	t_var	*var;
 
-	var = get_var();
-//	mlx_clear_window(mlx->mlx, mlx->win);///
-	if (mlx->img_ptr != NULL)///
-		mlx_destroy_image(mlx->mlx, mlx->img_ptr);///
 	mlx->img_ptr = mlx_new_image(mlx->mlx, var->win_abs, var->win_ord);
 	mlx->data = mlx_get_data_addr(mlx->img_ptr, &mlx->bpp, &mlx->sizeline, &endian);
 }
@@ -64,7 +59,7 @@ void	display(void)
 	mlx->win = mlx_new_window(mlx->mlx, var->win_abs, var->win_ord, "RTV1 - 42");
 	mlx_expose_hook(mlx->win, expose_hook, mlx);
 	mlx_key_hook(mlx->win, key_hook, NULL);
-	prepare_draw(mlx);
-	raytracer(mlx);
+	prepare_draw(mlx, var);
+	raytracer(mlx, scene, var);
 	mlx_loop(mlx->mlx);
 }

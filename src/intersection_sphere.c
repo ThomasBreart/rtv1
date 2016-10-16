@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 22:38:47 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/15 12:56:43 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/16 12:52:09 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ static int		delta_pos(double a, double b, double delta, double *near)
 	return (0);
 }
 
-int		intersection_sphere(t_obj *sphere, t_ray *ray, double *near)
+int		intersection_sphere(t_obj *sphere, t_ray *ray)
 {
 	double		a;
 	double		b;
@@ -63,8 +63,8 @@ int		intersection_sphere(t_obj *sphere, t_ray *ray, double *near)
 	if (delta < 0)
 		return (0);
 	if (delta == 0)
-		return (delta_zero(a, b, near));
+		return (delta_zero(a, b, &ray->lenght));
 	else
-		return (delta_pos(a, b, delta, near));
+		return (delta_pos(a, b, delta, &ray->lenght));
 	return (0);
 }
