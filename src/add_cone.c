@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/16 10:19:01 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 18:58:43 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/18 15:27:26 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,6 @@ void	add_cone(char *line)
 	scene->obj[scene->obj_index].g = coords[8];
 	scene->obj[scene->obj_index].b = coords[9];
 	free_double_tab(tab);
-	scene->obj[scene->obj_index].radius = (degree / 360.0) * 3.1415;
+	scene->obj[scene->obj_index].radius = tan((degree / 360.0) * 3.1415);
 	vector_normalize(&scene->obj[scene->obj_index].normale);
 }

@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/16 09:39:37 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 20:20:23 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/18 16:22:11 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,9 @@ static int		delta_pos(double a, double b, double delta, double *near)
 
 	t1 = ((b * -1.0) + sqrt(delta)) / (2.0 * a);
 	t2 = ((b * -1.0) - sqrt(delta)) / (2.0 * a);
-	if (t1 < t2)
+	if (t1 < 0 && t2 < 0)
+		return (0);
+	if (t1 < t2 && t1 > 0)
 		hit = t1;
 	else
 		hit = t2;
@@ -58,13 +60,15 @@ int		intersection_cone(t_obj *cone, t_ray *ray)
 	tmp = (1.0 + cone->radius * cone->radius) * ft_carre(vector_dot(&ray->d, &cone->normale));
 	a = vector_dot(&ray->d, &ray->d) - tmp;
 	tmp = (1.0 + cone->radius * cone->radius) * vector_dot(&ray->d, &cone->normale) * vector_dot(&x, &cone->normale);
-	b = 2 * (vector_dot(&ray->d, &x) - tmp);
+	b = 2.0 * (vector_dot(&ray->d, &x) - tmp);
 	tmp = (1.0 + cone->radius * cone->radius) * ft_carre(vector_dot(&x, &cone->normale));
 	c = vector_dot(&x, &x) - tmp;
 
 	delta = ft_carre(b) - (4.0 * a * c);
 	if (delta < 0)
+	{
 		return (0);
+	}
 	if (delta == 0)
 		return (delta_zero(a, b, &ray->lenght));
 	else

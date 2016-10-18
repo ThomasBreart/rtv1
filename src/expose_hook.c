@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 07:52:21 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 21:28:39 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/18 15:19:45 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,11 @@ void		find_color(t_ray *light_ray, t_light light, t_vec3d hit, double *rgb)
 	}
 	vector_normalize(&normale);
 	angle = vector_dot(&normale, &light_ray->d);
+/*	if (angle >= 0 && light_ray->obj->type == PLAN)
+	{
+		normale = vector_multiply_real(normale, -1.0);
+		angle = vector_dot(&normale, &light_ray->d);
+	}*/
 	if (angle >= 0)
 	{
 		*rgb = 0;
@@ -145,11 +150,12 @@ int		raytracer_lights(t_scene *scene, t_ray *cam_ray/*, int x, int y*/)
 			find_color(&light_ray, scene->light[i], hit, (double*)&rgb);
 		else
 		{
-			if (cam_ray->obj->type == CONE)
-			{
-				printf("obj touchay: %d\n", light_ray.obj->type);
-				*rgb = 250;
-			}
+			printf("p null jepari: %p\n", light_ray.obj);
+		//	if (cam_ray->obj->type == CONE)
+		//	{
+		//		printf("obj touchay: %d\n", light_ray.obj->type);
+				rgb[0] = 250;
+		//	}
 		}
 		++i;
 	}
