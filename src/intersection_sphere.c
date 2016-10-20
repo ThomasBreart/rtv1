@@ -6,13 +6,13 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 22:38:47 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/20 22:43:43 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/21 01:38:44 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-static int		delta_pos(double a, double b, double delta, double *near)
+static int	delta_pos(double a, double b, double delta, double *near)
 {
 	double		t1;
 	double		t2;
@@ -34,7 +34,7 @@ static int		delta_pos(double a, double b, double delta, double *near)
 	return (0);
 }
 
-int		intersection_sphere(t_obj *sphere, t_ray *ray)
+int			intersection_sphere(t_obj *sphere, t_ray *ray)
 {
 	double		a;
 	double		b;

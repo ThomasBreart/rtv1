@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2015/03/17 09:45:17 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/01 16:40:07 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/21 01:42:08 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int		check_buf(char **buf, size_t *j, int read_end)
 
 int		get_next_line(int const fd, char **line)
 {
-	static char	*buf;
+	static char		*buf;
 	t_var_gnl		x;
 
 	x.read_end = 1;

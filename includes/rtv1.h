@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/21 01:24:56 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/21 01:40:47 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,8 +114,6 @@ typedef	struct		s_var
 	double			cam_dir;
 }					t_var;
 
-void				debug_cam(t_cam *cam);
-
 void				raytracer(t_mlx *mlx, t_scene *scene, t_var *var);
 void				add_cam(char *line);
 void				add_cone(char *line);
@@ -127,9 +125,11 @@ t_ray				create_light_ray(t_light *light, t_vec3d hit);
 t_ray				create_cam_ray(double x, double y);
 void				display(void);
 int					expose_hook(t_mlx *mlx);
-void				extract_data(char **tab, double *coords, int max_data, char last_hexa);
+void				extract_data(char **tab, double *coords, int max_data,
+																char last_hexa);
 double				ft_atod_h(char *str);
-void				find_color(t_ray *light_ray, t_light *light, t_vec3d hit, double *rgb);
+void				find_color(t_ray *light_ray, t_light *light, t_vec3d hit,
+																double *rgb);
 t_mlx				*get_mlx(void);
 t_var				*get_var(void);
 t_scene				*get_scene(void);
