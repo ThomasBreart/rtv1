@@ -6,19 +6,18 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:58:54 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 19:28:59 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/21 01:26:59 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-void	init_cam(t_cam *cam, t_var *var)
+static	void	init_cam(t_cam *cam, t_var *var)
 {
 	cam->viewplane_height = 0.5;
 	cam->viewplane_width = 0.5;
 	cam->xindent = cam->viewplane_width / (double)var->win_abs;
 	cam->yindent = cam->viewplane_height / (double)var->win_ord;
-
 	cam->dirvec = vector_sub(cam->dir, cam->origin);
 	vector_normalize(&cam->dirvec);
 	cam->upvec = vector_init(0, 1, 0);
@@ -36,15 +35,16 @@ void	init_cam(t_cam *cam, t_var *var)
 			vector_multiply_real(cam->rightvec, cam->viewplane_width / 2.0));
 }
 
-void	prepare_draw(t_mlx *mlx, t_var *var)
+static	void	prepare_draw(t_mlx *mlx, t_var *var)
 {
 	int		endian;
 
 	mlx->img_ptr = mlx_new_image(mlx->mlx, var->win_abs, var->win_ord);
-	mlx->data = mlx_get_data_addr(mlx->img_ptr, &mlx->bpp, &mlx->sizeline, &endian);
+	mlx->data = mlx_get_data_addr(mlx->img_ptr, &mlx->bpp, &mlx->sizeline,
+																	&endian);
 }
 
-void	display(void)
+void			display(void)
 {
 	t_mlx		*mlx;
 	t_var		*var;
@@ -54,9 +54,9 @@ void	display(void)
 	var = get_var();
 	scene = get_scene();
 	init_cam(&scene->cam, var);
-//	debug_cam(&scene->cam);
 	mlx->mlx = mlx_init();
-	mlx->win = mlx_new_window(mlx->mlx, var->win_abs, var->win_ord, "RTV1 - 42");
+	mlx->win = mlx_new_window(mlx->mlx, var->win_abs, var->win_ord,
+																"RTV1 - 42");
 	mlx_expose_hook(mlx->win, expose_hook, mlx);
 	mlx_key_hook(mlx->win, key_hook, NULL);
 	prepare_draw(mlx, var);

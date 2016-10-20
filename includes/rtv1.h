@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 19:17:38 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/21 01:24:56 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,7 @@ void				display(void);
 int					expose_hook(t_mlx *mlx);
 void				extract_data(char **tab, double *coords, int max_data, char last_hexa);
 double				ft_atod_h(char *str);
+void				find_color(t_ray *light_ray, t_light *light, t_vec3d hit, double *rgb);
 t_mlx				*get_mlx(void);
 t_var				*get_var(void);
 t_scene				*get_scene(void);
@@ -137,9 +138,12 @@ int					intersection_cone(t_obj *plan, t_ray *ray);
 int					intersection_cylinder(t_obj *plan, t_ray *ray);
 int					intersection_plan(t_obj *plan, t_ray *ray);
 int					intersection_sphere(t_obj *sphere, t_ray *ray);
+int					is_hexa(char c);
 int					key_hook(int keycode);
-int					parse_scene(void);
-void				prepare_draw(t_mlx *mlx, t_var *var);
+void				parser_error(char *error);
+int					parse_hexa(char *str, double *coords);
+int					parse_scene(char *file);
+unsigned int		set_color(double *rgb, t_obj *obj);
 char				**split_data(char *str, int max_data, char *object_name);
 t_vec3d				*vector_copy(t_vec3d *a);
 double				vector_dot(t_vec3d *a, t_vec3d *b);

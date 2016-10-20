@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/16 10:19:01 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/18 15:27:26 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/21 01:25:46 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,7 @@ void	add_cone(char *line)
 	scene = get_scene();
 	++scene->obj_index;
 	if (scene->obj_index > 20)
-	{
-		ft_putendl_fd("Too much objects bro", STDERR_FILENO);
-		exit(-1);
-	}
+		parser_error("Too much objects bro");
 	tab = split_data(line + 5, 8, "cone");
 	extract_data(tab, coords, 8, 1);
 	scene->obj[scene->obj_index].type = CONE;

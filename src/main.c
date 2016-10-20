@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:48:47 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 11:29:12 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/21 00:59:39 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,12 +84,17 @@ void	debug_parser(void)
 			scene->obj[2].b);
 }
 
-int		main(void)
+int		main(int argc, char **argv)
 {
+	if (argc > 2)
+	{
+		ft_putendl_fd("Too many arguments", STDERR_FILENO);
+		return (-1);
+	}
 	init();
-	if (parse_scene() == -1)
-		return (-1); // penser a free si err
-	debug_parser();
+	if (parse_scene(argv[1]) == -1)
+		return (-1);
+//	debug_parser();
 	display();
 	return (0);
 }

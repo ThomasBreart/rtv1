@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/15 12:35:13 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/15 13:58:36 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/10/21 01:23:58 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,7 @@ void	add_cylinder(char *line)
 	scene = get_scene();
 	++scene->obj_index;
 	if (scene->obj_index > 20)
-	{
-		ft_putendl_fd("Too much objects bro", STDERR_FILENO);
-		exit(-1);
-	}
+		parser_error("Too much objects bro");
 	tab = split_data(line + 9, 8, "cylinder");
 	extract_data(tab, coords, 8, 1);
 	scene->obj[scene->obj_index].type = CYLINDER;

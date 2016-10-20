@@ -1,19 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   expose_hook.c                                      :+:      :+:    :+:   */
+/*   set_color.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/09/20 07:52:21 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/21 00:39:58 by tbreart          ###   ########.fr       */
+/*   Created: 2016/10/21 00:40:03 by tbreart           #+#    #+#             */
+/*   Updated: 2016/10/21 01:31:08 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-int		expose_hook(t_mlx *mlx)
+unsigned int	set_color(double *rgb, t_obj *obj)
 {
-	mlx_put_image_to_window(mlx->mlx, mlx->win, mlx->img_ptr, 0, 0);
-	return (0);
+	unsigned int	color;
+	double			r;
+	double			g;
+	double			b;
+
+	r = *rgb;
+	if (*rgb > obj->r)
+		r = obj->r;
+	++rgb;
+	g = *rgb;
+	if (*rgb > obj->g)
+		g = obj->g;
+	++rgb;
+	b = *rgb;
+	if (*rgb > obj->b)
+		b = obj->b;
+	color = 0;
+	color = ((color | (unsigned char)r) << 8);
+	color = ((color | (unsigned char)g) << 8);
+	color = ((color | (unsigned char)b));
+	return (color);
 }
