@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 00:17:56 by tbreart           #+#    #+#             */
-/*   Updated: 2016/11/03 03:56:10 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/03 04:02:15 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ static	void		calc_color(double angle, t_ray *light_ray, t_light *light,
 	if (tmp > *rgb)
 		*rgb = tmp;
 	++rgb;
+	tmp = light_ray->obj->g * light->g / 255.0 * angle;
 	if (tmp > light_ray->obj->g)
 		tmp = light_ray->obj->g;
 	if (tmp > *rgb)
@@ -67,6 +68,7 @@ static	void		calc_color(double angle, t_ray *light_ray, t_light *light,
 //	if (*rgb > light_ray->obj->g)
 //		*rgb = light_ray->obj->g;
 	++rgb;
+	tmp = light_ray->obj->b * light->b / 255.0 * angle;
 	if (tmp > light_ray->obj->b)
 		tmp = light_ray->obj->b;
 	if (tmp > *rgb)
