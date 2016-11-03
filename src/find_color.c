@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 00:17:56 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/21 01:30:45 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/03 03:56:10 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,21 +48,59 @@ static	t_vec3d		calc_cone_normale(t_ray *light_ray, t_vec3d hit)
 static	void		calc_color(double angle, t_ray *light_ray, t_light *light,
 																	double *rgb)
 {
+	double		tmp;
 	angle *= -1;
-	*rgb += light_ray->obj->r * light->r / 255.0 * angle;
+	tmp = light_ray->obj->r * light->r / 255.0 * angle;
+	//*rgb += light_ray->obj->r * light->r / 255.0 * angle;
+	//if (*rgb > light_ray->obj->r)
+	//	*rgb = light_ray->obj->r;
+	if (tmp > light_ray->obj->r)
+		tmp = light_ray->obj->r;
+	if (tmp > *rgb)
+		*rgb = tmp;
 	++rgb;
-	*rgb += light_ray->obj->g * light->g / 255.0 * angle;
+	if (tmp > light_ray->obj->g)
+		tmp = light_ray->obj->g;
+	if (tmp > *rgb)
+		*rgb = tmp;
+//	*rgb += light_ray->obj->g * light->g / 255.0 * angle;
+//	if (*rgb > light_ray->obj->g)
+//		*rgb = light_ray->obj->g;
 	++rgb;
-	*rgb += light_ray->obj->b * light->b / 255.0 * angle;
+	if (tmp > light_ray->obj->b)
+		tmp = light_ray->obj->b;
+	if (tmp > *rgb)
+		*rgb = tmp;
+//	*rgb += light_ray->obj->b * light->b / 255.0 * angle;
+//	if (*rgb > light_ray->obj->b)
+//		*rgb = light_ray->obj->b;
+
+}
+
+double		puissance(double x, int p)
+{
+	int		i;
+	double	tmp;
+
+	tmp = x;
+	i = 0;
+	while (i < p)
+	{
+		x *= tmp;
+		++i;
+	}
+	return (x);
 }
 
 void				find_color(t_ray *light_ray, t_light *light, t_vec3d hit,
-																	double *rgb)
+																	double *rgb, t_ray *cam_ray)
 {
 	t_vec3d		normale;
 	double		angle;
 	int			color;
+	t_scene		*scene;
 
+	scene = get_scene();
 	color = 0;
 	if (light_ray->obj->type == SPHERE)
 		normale = vector_sub(hit, light_ray->obj->origin);
@@ -80,5 +118,55 @@ void				find_color(t_ray *light_ray, t_light *light, t_vec3d hit,
 		angle = vector_dot(&normale, &light_ray->d);
 	}
 	if (angle < 0)
+	{
+		(void)cam_ray;
 		calc_color(angle, light_ray, light, rgb);
+
+		t_vec3d		view_vec;
+		t_vec3d		r_vec;
+		t_vec3d		v_vec;
+		t_vec3d		tmpvec;
+
+		view_vec = vector_sub(scene->cam.origin, hit);
+		tmpvec = vector_multiply_real(normale, -1);
+		v_vec = vector_multiply_real(normale, (2 * vector_dot(&tmpvec, &light_ray->d)));
+		r_vec = vector_add(light_ray->d, v_vec);
+		double		tmp;
+		double		p;
+/*
+		t_vec3d		tmpvec;
+		angle *= -1;
+		tmpvec = vector_multiply_real(light_ray->d, -1);
+		tmp = vector_dot(&tmpvec, &cam_ray->d);
+	//	tmp = vector_dot(&tmp, &normale);
+		tmp = puissance(tmp, 50);
+		tmp = 1.0;
+*/
+	vector_normalize(&r_vec);
+	vector_normalize(&view_vec);
+	tmp = vector_dot(&r_vec, &view_vec);
+	if (tmp <= 0)
+		return ;
+	p = puissance(tmp, 10);
+	tmp = light->r * p;
+	//*rgb += light->r * tmp;
+	if (tmp > light->r)
+		tmp = light->r;
+	if (tmp > *rgb)
+		*rgb = tmp;
+	++rgb;
+//	*rgb += light->g * tmp;
+	tmp = light->g * p;
+	if (tmp > light->g)
+		tmp = light->g;
+	if (tmp > *rgb)
+		*rgb = tmp;
+	++rgb;
+	//*rgb += light->b * tmp;
+	tmp = light->b * p;
+	if (tmp > light->b)
+		tmp = light->b;
+	if (tmp > *rgb)
+		*rgb = tmp;
+	}
 }
