@@ -1,32 +1,28 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   set_color.c                                        :+:      :+:    :+:   */
+/*   ft_pow.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/10/21 00:40:03 by tbreart           #+#    #+#             */
-/*   Updated: 2016/11/06 13:51:23 by tbreart          ###   ########.fr       */
+/*   Created: 2016/11/06 13:44:09 by tbreart           #+#    #+#             */
+/*   Updated: 2016/11/06 13:44:35 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
 
-unsigned int	set_color(double *rgb)
+double		ft_pow(double x, int p)
 {
-	unsigned int	color;
-	double			r;
-	double			g;
-	double			b;
+	int		i;
+	double	tmp;
 
-	r = *rgb;
-	++rgb;
-	g = *rgb;
-	++rgb;
-	b = *rgb;
-	color = 0;
-	color = ((color | (unsigned char)r) << 8);
-	color = ((color | (unsigned char)g) << 8);
-	color = ((color | (unsigned char)b));
-	return (color);
+	tmp = x;
+	i = 0;
+	while (i < p)
+	{
+		x *= tmp;
+		++i;
+	}
+	return (x);
 }

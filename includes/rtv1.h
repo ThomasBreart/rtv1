@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/11/06 12:45:59 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/06 13:52:35 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,7 @@
 # include <math.h>
 # include <stdlib.h>
 # include <fcntl.h>
-#include <stdio.h>
-#include "../libft/includes/libft.h"
+# include "../libft/includes/libft.h"
 
 # define SPHERE 1
 # define PLAN 2
@@ -121,15 +120,18 @@ void				add_cylinder(char *line);
 void				add_light(char *line);
 void				add_plan(char *line);
 void				add_sphere(char *line);
+void				calc_normale(t_ray *light_ray, t_vec3d hit,
+															t_vec3d *normale);
 t_ray				create_light_ray(t_light *light, t_vec3d hit);
 t_ray				create_cam_ray(double x, double y);
 void				display(void);
 int					expose_hook(t_mlx *mlx);
 void				extract_data(char **tab, double *coords, int max_data,
 																char last_hexa);
-double				ft_atod_h(char *str);
 void				find_color(t_ray *light_ray, t_light *light, t_vec3d hit,
 																double *rgb);
+double				ft_atod_h(char *str);
+double				ft_pow(double x, int p);
 t_mlx				*get_mlx(void);
 t_var				*get_var(void);
 t_scene				*get_scene(void);
@@ -143,7 +145,7 @@ int					key_hook(int keycode);
 void				parser_error(char *error);
 int					parse_hexa(char *str, double *coords);
 int					parse_scene(char *file);
-unsigned int		set_color(double *rgb, t_obj *obj);
+unsigned int		set_color(double *rgb);
 char				**split_data(char *str, int max_data, char *object_name);
 t_vec3d				*vector_copy(t_vec3d *a);
 double				vector_dot(t_vec3d *a, t_vec3d *b);

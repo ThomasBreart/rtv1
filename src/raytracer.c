@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 00:07:45 by tbreart           #+#    #+#             */
-/*   Updated: 2016/11/06 12:18:47 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/06 13:51:32 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,10 +54,10 @@ static int		raytracer_lights(t_scene *scene, t_ray *cam_ray)
 		light_ray = create_light_ray(&scene->light[i], hit);
 		shoot_obj(scene, &light_ray);
 		if (cam_ray->obj == light_ray.obj)
-			find_color(&light_ray, &scene->light[i], hit, (double*)&rgb, cam_ray);
+			find_color(&light_ray, &scene->light[i], hit, (double*)&rgb);
 		++i;
 	}
-	color = set_color((double*)&rgb, cam_ray->obj);
+	color = set_color((double*)&rgb);
 	return (color);
 }
 
@@ -78,10 +78,6 @@ void			raytracer(t_mlx *mlx, t_scene *scene, t_var *var)
 			shoot_obj(scene, &cam_ray);
 			if (cam_ray.obj != NULL)
 			{
-/*				if (cam_ray.obj->origin.z == 50)
-					color = 255;
-				else
-					color = 255 * 255;*/
 				color = raytracer_lights(scene, &cam_ray);
 				img_pixel_put(mlx, x, y, color);
 			}
