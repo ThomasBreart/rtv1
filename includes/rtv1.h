@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:51:30 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/21 02:09:18 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/06 12:45:59 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,7 @@ void				extract_data(char **tab, double *coords, int max_data,
 																char last_hexa);
 double				ft_atod_h(char *str);
 void				find_color(t_ray *light_ray, t_light *light, t_vec3d hit,
-																double *rgb, t_ray *cam_ray);
+																double *rgb);
 t_mlx				*get_mlx(void);
 t_var				*get_var(void);
 t_scene				*get_scene(void);

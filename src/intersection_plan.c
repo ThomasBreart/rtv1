@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 22:50:14 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/16 13:45:21 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/06 12:35:21 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@ int		intersection_plan(t_obj *plan, t_ray *ray)
 			plan->normale.z * ray->d.z;
 	hit /= tmp;
 	hit *= -1;
+	tmp = hit;
+	hit = round(hit * 1000000000) / 1000000000; // ??
 	if (hit < ray->lenght && hit > 0)
 	{
 		ray->lenght = hit;
