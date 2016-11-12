@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 22:24:45 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/21 01:18:36 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/12 18:20:02 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,26 @@
 
 static	void	add_obj(char *line)
 {
-	if (ft_strncmp("cam", line, 3) == 0)
+	if (ft_strncmp("cam", line, 3) == 0 && line[3] == '(')
 		add_cam(line);
-	else if (ft_strncmp("sphere", line, 6) == 0)
+	else if (ft_strncmp("sphere", line, 6) == 0 && line[6] == '(')
 		add_sphere(line);
-	else if (ft_strncmp("plan", line, 4) == 0)
+	else if (ft_strncmp("plan", line, 4) == 0 && line[4] == '(')
 		add_plan(line);
-	else if (ft_strncmp("light", line, 5) == 0)
+	else if (ft_strncmp("light", line, 5) == 0 && line[5] == '(')
 		add_light(line);
-	else if (ft_strncmp("cylinder", line, 8) == 0)
+	else if (ft_strncmp("cylinder", line, 8) == 0 && line[8] == '(')
 		add_cylinder(line);
-	else if (ft_strncmp("cone", line, 4) == 0)
+	else if (ft_strncmp("cone", line, 4) == 0 && line[4] == '(')
 		add_cone(line);
+	else
+	{
+		if (ft_strlen(line) == 0)
+			ft_putendl_fd("empty line", STDERR_FILENO);
+		else
+			ft_putendl_fd("object bad formated", STDERR_FILENO);
+		exit(0);
+	}
 }
 
 int				parse_scene(char *file)

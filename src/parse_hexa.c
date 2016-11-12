@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 01:18:43 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/21 01:18:59 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/12 18:44:21 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ static	void	parse_hexa_error(char *tmp)
 	i = 1;
 	while (*tmp != '\0')
 	{
-		if ((i < 7 && is_hexa(*tmp) == 0) || i > 8)
+		if ((i < 7 && is_hexa(*tmp) == 0) || i >= 8)
 		{
 			ft_putendl_fd("bad hexa number", STDERR_FILENO);
 			exit(-1);

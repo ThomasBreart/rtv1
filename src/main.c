@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:48:47 by tbreart           #+#    #+#             */
-/*   Updated: 2016/11/06 10:31:37 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/12 17:18:18 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	init(void)
 	var = get_var();
 	scene = get_scene();
 	mlx = get_mlx();
-	var->win_abs = 1000;
-	var->win_ord = 1000;
+	var->win_abs = 640;
+	var->win_ord = 480;
 	scene->cam.init = 0;
 	scene->obj_index = -1;
 	scene->light_index = -1;

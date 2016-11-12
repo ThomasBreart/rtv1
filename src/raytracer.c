@@ -6,11 +6,12 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/21 00:07:45 by tbreart           #+#    #+#             */
-/*   Updated: 2016/11/06 13:51:32 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/12 17:16:58 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "rtv1.h"
+#include <stdio.h>
 
 static void		shoot_obj(t_scene *scene, t_ray *ray)
 {

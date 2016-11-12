@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/09/20 06:58:54 by tbreart           #+#    #+#             */
-/*   Updated: 2016/10/21 01:26:59 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/12 17:19:07 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static	void	init_cam(t_cam *cam, t_var *var)
 {
-	cam->viewplane_height = 0.5;
+	cam->viewplane_height = 0.35;
 	cam->viewplane_width = 0.5;
 	cam->xindent = cam->viewplane_width / (double)var->win_abs;
 	cam->yindent = cam->viewplane_height / (double)var->win_ord;

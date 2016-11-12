@@ -1,0 +1,7 @@
+cam(0, 0, 0, 0, 0, 10)
+light(0, 0, 50, ffffff)
+plan(0, -10, 0, 0, 1, 0, 0, aaccbb)
+plan(0, 10, 0, 0, 1, 0, 0, aaccbb)
+plan(0, 0, 200, 0, 0, 1, 0, aaccbb)
+plan(10, 0, 0, 1, 0, 0, 0, aaccbb)
+plan(-10, 0, 0, 1, 0, 0, 0, aaccbb)
