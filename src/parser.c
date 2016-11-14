@@ -6,7 +6,7 @@
 /*   By: tbreart <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/10/05 22:24:45 by tbreart           #+#    #+#             */
-/*   Updated: 2016/11/12 18:20:02 by tbreart          ###   ########.fr       */
+/*   Updated: 2016/11/12 20:04:49 by tbreart          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,19 @@ static	void	add_obj(char *line)
 			ft_putendl_fd("empty line", STDERR_FILENO);
 		else
 			ft_putendl_fd("object bad formated", STDERR_FILENO);
-		exit(0);
+		exit(-1);
+	}
+}
+
+static	void	check_cam(void)
+{
+	t_scene		*scene;
+
+	scene = get_scene();
+	if (scene->cam.init == 0)
+	{
+		ft_putendl_fd("No cam dude", STDERR_FILENO);
+		exit(-1);
 	}
 }
 
@@ -47,6 +59,7 @@ int				parse_scene(char *file)
 		ft_putendl_fd("can't open file", STDERR_FILENO);
 		return (-1);
 	}
+	line = NULL;
 	while ((ret = get_next_line(fd, &line)) > 0)
 	{
 		add_obj(line);
@@ -54,6 +67,11 @@ int				parse_scene(char *file)
 	}
 	close(fd);
 	if (ret == -1)
+	{
 		ft_putendl_fd("can't read file", STDERR_FILENO);
+		exit(-1);
+	}
+	ft_strdel(&line);
+	check_cam();
 	return (ret);
 }
